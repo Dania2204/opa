@@ -554,6 +554,7 @@ class _MapScreenState extends State<MapScreen> {
                 },
               ),
             ),
+          // ── Panel del conductor ────────────────────────────────────────
           if (isDriver && !_showAddSchool)
             Positioned(
               bottom: 20,
@@ -568,8 +569,19 @@ class _MapScreenState extends State<MapScreen> {
                 onStop: _stopRoute,
               ),
             ),
+          // ── Panel de administración de pedidos (admin/superAdmin) ──────
+          if (canViewAll && !_showAddSchool && !isDriver)
+            Positioned(
+              bottom: 20,
+              left: 16,
+              right: 16,
+              child: _AdminOrdersPanel(
+                orders: _orders,
+                onRefresh: _refreshMapData,
+              ),
+            ),
           if (_showAddSchool && _pendingPin == null)
-            const Positioned(
+            Positioned(
               top: 110,
               left: 20,
               right: 20,
@@ -734,7 +746,7 @@ class _AddSchoolPanel extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 S.mapAddSchool,
                 style: TextStyle(
                   fontWeight: FontWeight.w800,
@@ -769,7 +781,7 @@ class _AddSchoolPanel extends StatelessWidget {
               ],
             ),
           ],
-          const SizedBox(height: 14),
+          SizedBox(height: 14),
           TextField(
             controller: nameCtrl,
             decoration: InputDecoration(
@@ -777,7 +789,7 @@ class _AddSchoolPanel extends StatelessWidget {
               prefixIcon: const Icon(Icons.school_outlined),
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           TextField(
             controller: addrCtrl,
             decoration: InputDecoration(
@@ -785,7 +797,7 @@ class _AddSchoolPanel extends StatelessWidget {
               prefixIcon: const Icon(Icons.location_on_outlined),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           GradientButton(
             label: S.mapSaveLocation,
             icon: Icons.save_rounded,
@@ -837,7 +849,7 @@ class _DriverOrderPanel extends StatelessWidget {
             ),
           ],
         ),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.inbox_rounded, color: PaeColors.inactive),
@@ -887,7 +899,7 @@ class _DriverOrderPanel extends StatelessWidget {
                   Icons.stop_circle_outlined,
                   color: PaeColors.error,
                 ),
-                label: const Text(
+                label: Text(
                   S.mapStopRoute,
                   style: TextStyle(color: PaeColors.error),
                 ),
@@ -1026,12 +1038,214 @@ class _AvailableOrderRow extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               minimumSize: Size.zero,
             ),
-            child: const Text(
+            child: Text(
               S.orderClaimButton,
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ── Admin Orders Panel ────────────────────────────────────────────────────────
+
+class _AdminOrdersPanel extends StatelessWidget {
+  const _AdminOrdersPanel({
+    required this.orders,
+    required this.onRefresh,
+  });
+
+  final List<DeliveryOrder> orders;
+  final VoidCallback onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    final pending = orders.where((o) => o.status == DeliveryStatus.pending).length;
+    final enRoute = orders.where((o) => o.status == DeliveryStatus.enRoute).length;
+    final assigned = orders.where((o) => o.status == DeliveryStatus.assigned).length;
+    final recentOrders = orders
+        .where((o) => o.status != DeliveryStatus.delivered)
+        .take(3)
+        .toList();
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, -4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.local_shipping_rounded,
+                  color: PaeColors.primary, size: 18),
+              const SizedBox(width: 8),
+              const Text(
+                'Panel de Pedidos',
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 14,
+                  fontFamily: PaeTypography.fontDisplay,
+                ),
+              ),
+              const Spacer(),
+              GestureDetector(
+                onTap: onRefresh,
+                child: const Icon(Icons.refresh_rounded,
+                    color: PaeColors.textSecondary, size: 18),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          // Status summary row
+          Row(
+            children: [
+              _StatusPill(
+                label: 'Pendientes',
+                count: pending,
+                color: PaeColors.warning,
+              ),
+              const SizedBox(width: 8),
+              _StatusPill(
+                label: 'Asignados',
+                count: assigned,
+                color: PaeColors.info,
+              ),
+              const SizedBox(width: 8),
+              _StatusPill(
+                label: 'En ruta',
+                count: enRoute,
+                color: PaeColors.success,
+              ),
+            ],
+          ),
+          if (recentOrders.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            const Divider(height: 1),
+            const SizedBox(height: 8),
+            const Text(
+              'Pedidos activos',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: PaeColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 6),
+            ...recentOrders.map(
+              (o) => Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Row(
+                  children: [
+                    const Icon(Icons.school_rounded,
+                        color: PaeColors.primary, size: 14),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        '${o.orderId} — ${o.schoolName}',
+                        style: const TextStyle(fontSize: 12),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: _statusColor(o.status).withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        o.status.label,
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          color: _statusColor(o.status),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ] else ...[
+            const SizedBox(height: 8),
+            const Text(
+              'No hay pedidos activos. Toca una escuela en el mapa para crear un pedido.',
+              style: TextStyle(
+                fontSize: 12,
+                color: PaeColors.textSecondary,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Color _statusColor(DeliveryStatus s) {
+    switch (s) {
+      case DeliveryStatus.pending:   return PaeColors.warning;
+      case DeliveryStatus.assigned:  return PaeColors.info;
+      case DeliveryStatus.enRoute:   return PaeColors.success;
+      case DeliveryStatus.delivered: return PaeColors.textSecondary;
+    }
+  }
+}
+
+class _StatusPill extends StatelessWidget {
+  const _StatusPill({
+    required this.label,
+    required this.count,
+    required this.color,
+  });
+
+  final String label;
+  final int count;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          children: [
+            Text(
+              '$count',
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 16,
+                color: color,
+                fontFamily: PaeTypography.fontDisplay,
+              ),
+            ),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 9,
+                color: color,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

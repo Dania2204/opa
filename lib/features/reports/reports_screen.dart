@@ -159,8 +159,8 @@ class _ReportsList extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.assignment_outlined, size: 64, color: PaeColors.inactive),
-            const SizedBox(height: 16),
-            const Text(S.reportNoReports,
+            SizedBox(height: 16),
+            Text(S.reportNoReports,
                 style: TextStyle(color: PaeColors.textSecondary, fontSize: 15)),
           ],
         ),
@@ -278,7 +278,7 @@ class _ReportCard extends StatelessWidget {
               ),
             ),
           ],
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           Row(
             children: [
               const Icon(Icons.schedule_rounded,
@@ -291,7 +291,7 @@ class _ReportCard extends StatelessWidget {
                 style: const TextStyle(
                     color: PaeColors.textSecondary, fontSize: 11),
               ),
-              const Spacer(),
+              Spacer(),
               StatusBadge(
                 label: report.isSynced ? S.reportSynced : S.reportPendingSync,
                 color: report.isSynced ? PaeColors.success : PaeColors.warning,
@@ -376,7 +376,7 @@ class _NewReportSheetState extends State<_NewReportSheet> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Container(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -391,8 +391,8 @@ class _NewReportSheetState extends State<_NewReportSheet> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            const Text(S.reportNew,
+            SizedBox(height: 20),
+            Text(S.reportNew,
                 style: TextStyle(
                   fontFamily: PaeTypography.fontDisplay,
                   fontSize: 20,
@@ -403,7 +403,7 @@ class _NewReportSheetState extends State<_NewReportSheet> {
             // Order selector
             DropdownButtonFormField<DeliveryOrder>(
               value: _selectedOrder,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: S.reportSchool,
                 prefixIcon: Icon(Icons.local_shipping_rounded),
               ),
@@ -418,7 +418,7 @@ class _NewReportSheetState extends State<_NewReportSheet> {
             const SizedBox(height: 16),
 
             // Condition
-            const Text(S.reportCondition,
+            Text(S.reportCondition,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 13,
@@ -469,7 +469,7 @@ class _NewReportSheetState extends State<_NewReportSheet> {
             TextField(
               controller: _notesCtrl,
               maxLines: 3,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: S.reportNotes,
                 prefixIcon: Padding(
                   padding: EdgeInsets.only(bottom: 40),
@@ -483,7 +483,7 @@ class _NewReportSheetState extends State<_NewReportSheet> {
             // Photos
             Row(
               children: [
-                const Text(S.reportPhotos,
+                Text(S.reportPhotos,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 13,

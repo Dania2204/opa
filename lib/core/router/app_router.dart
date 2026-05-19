@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../l10n/app_strings.dart';
 import '../../data/models/user_model.dart';
-import '../../data/models/user_role.dart';
 import '../../features/auth/login/login_screen.dart';
 import '../../features/auth/register/register_screen.dart';
 import '../../features/auth/splash/splash_screen.dart';
@@ -20,6 +19,8 @@ class AppRouter {
     RouteSettings s,
     VoidCallback onToggleTheme,
     ThemeMode themeMode,
+    VoidCallback onToggleLanguage,
+    String locale,
   ) {
     switch (s.name) {
       case splash:
@@ -34,6 +35,8 @@ class AppRouter {
           user: user,
           onToggleTheme: onToggleTheme,
           themeMode: themeMode,
+          onToggleLanguage: onToggleLanguage,
+          locale: locale,
         ));
       default:
         return _fade(_NotFound());

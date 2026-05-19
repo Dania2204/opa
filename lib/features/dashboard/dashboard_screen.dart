@@ -116,7 +116,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20),
                           Text('${S.appName} Dashboard',
                               style: const TextStyle(
                                 color: Colors.white,
@@ -149,7 +149,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               // ── Stats grid ───────────────────────────────────────────
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                   child: GridView.count(
                     crossAxisCount: 2,
                     shrinkWrap: true,
@@ -188,7 +188,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
 
               // ── Quick Actions ────────────────────────────────────────
-              const SliverToBoxAdapter(
+              SliverToBoxAdapter(
                 child: SectionHeader(title: S.dashboardQuickActions),
               ),
               SliverToBoxAdapter(
@@ -199,7 +199,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
 
               // ── Recent deliveries ────────────────────────────────────
-              const SliverToBoxAdapter(
+              SliverToBoxAdapter(
                 child: SectionHeader(title: S.dashboardRecentActivity),
               ),
 
@@ -207,12 +207,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 SliverToBoxAdapter(
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(40),
+                      padding: EdgeInsets.all(40),
                       child: Column(
                         children: [
                           Icon(Icons.inbox_rounded,
                               size: 56, color: PaeColors.inactive),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12),
                           Text(S.orderNoOrders,
                               style: const TextStyle(
                                   color: PaeColors.textSecondary)),
@@ -339,13 +339,16 @@ class _OrderTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? PaeColors.cardDark : Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: PaeColors.divider),
+        border: Border.all(
+          color: isDark ? Colors.white.withOpacity(0.08) : PaeColors.divider,
+        ),
       ),
       child: Row(
         children: [

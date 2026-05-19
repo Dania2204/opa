@@ -7,23 +7,54 @@ import '../../data/models/user_model.dart';
 import '../../data/models/user_role.dart';
 import '../../data/repositories/auth_service.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
     super.key,
     required this.user,
     required this.onToggleTheme,
     required this.themeMode,
+    required this.onToggleLanguage,
+    required this.locale,
   });
 
   final AppUser user;
   final VoidCallback onToggleTheme;
   final ThemeMode themeMode;
+  final VoidCallback onToggleLanguage;
+  final String locale;
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
   Widget build(BuildContext context) {
-    final isDark = themeMode == ThemeMode.dark;
+    final isDark = widget.themeMode == ThemeMode.dark;
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final isES = widget.locale == 'es';
+
+    // Adaptive colors (respect dark mode)
+    final cardColor = isDark ? PaeColors.cardDark : Colors.white;
+    final textPrimary = isDark ? Colors.white : PaeColors.textPrimary;
+    final textSecondary = isDark
+        ? Colors.white.withOpacity(0.55)
+        : PaeColors.textSecondary;
+    final dividerColor = isDark
+        ? Colors.white.withOpacity(0.08)
+        : PaeColors.divider;
+    final tileColor = isDark ? PaeColors.cardDark : Colors.white;
+    final tileBorder = isDark
+        ? Colors.white.withOpacity(0.08)
+        : PaeColors.divider;
+    final iconBg = isDark
+        ? PaeColors.primaryLight.withOpacity(0.15)
+        : PaeColors.primary.withOpacity(0.08);
+    final iconColor = isDark ? PaeColors.accent : PaeColors.primary;
 
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           // ── Profile hero ──────────────────────────────────────────────
@@ -39,8 +70,8 @@ class ProfileScreen extends StatelessWidget {
                       Stack(
                         children: [
                           UserAvatar(
-                            initials: user.initials,
-                            photoPath: user.photoPath,
+                            initials: widget.user.initials,
+                            photoPath: widget.user.photoPath,
                             radius: 44,
                             backgroundColor: Colors.white.withOpacity(0.25),
                           ),
@@ -59,7 +90,7 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 14),
-                      Text(user.fullName,
+                      Text(widget.user.fullName,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 22,
@@ -67,11 +98,10 @@ class ProfileScreen extends StatelessWidget {
                             fontFamily: PaeTypography.fontDisplay,
                           )),
                       const SizedBox(height: 4),
-                      Text(user.email,
+                      Text(widget.user.email,
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.8),
                             fontSize: 13,
-                            fontFamily: PaeTypography.fontBody,
                           )),
                       const SizedBox(height: 12),
                       Container(
@@ -84,15 +114,14 @@ class ProfileScreen extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(_roleIcon(user.role),
+                            Icon(_roleIcon(widget.user.role),
                                 color: Colors.white, size: 14),
                             const SizedBox(width: 6),
-                            Text(user.role.label,
+                            Text(widget.user.role.label,
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
-                                  fontFamily: PaeTypography.fontBody,
                                 )),
                           ],
                         ),
@@ -104,7 +133,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
 
-          // ── Info cards ────────────────────────────────────────────────
+          // ── Info card ─────────────────────────────────────────────────
           SliverToBoxAdapter(
             child: Transform.translate(
               offset: const Offset(0, -20),
@@ -112,41 +141,69 @@ class ProfileScreen extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: cardColor,
                   borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: PaeColors.primary.withOpacity(0.08),
-                      blurRadius: 20,
-                      offset: const Offset(0, 4),
-                    )
-                  ],
+                  border: isDark
+                      ? Border.all(color: Colors.white.withOpacity(0.08))
+                      : null,
+                  boxShadow: isDark
+                      ? null
+                      : [
+                          BoxShadow(
+                            color: PaeColors.primary.withOpacity(0.08),
+                            blurRadius: 20,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                 ),
                 child: Column(
                   children: [
                     _InfoRow(
-                        icon: Icons.phone_outlined,
-                        label: 'Phone',
-                        value: user.phone.isNotEmpty ? user.phone : '—'),
-                    const Divider(height: 20),
+                      icon: Icons.phone_outlined,
+                      label: isES ? 'Teléfono' : 'Phone',
+                      value: widget.user.phone.isNotEmpty
+                          ? widget.user.phone
+                          : '—',
+                      textPrimary: textPrimary,
+                      textSecondary: textSecondary,
+                      iconColor: iconColor,
+                    ),
+                    Divider(height: 20, color: dividerColor),
                     _InfoRow(
-                        icon: Icons.badge_outlined,
-                        label: 'ID Number',
-                        value: user.idNumber.isNotEmpty ? user.idNumber : '—'),
-                    if (user.institution != null &&
-                        user.institution!.isNotEmpty) ...[
-                      const Divider(height: 20),
+                      icon: Icons.badge_outlined,
+                      label: isES ? 'Número de ID' : 'ID Number',
+                      value: widget.user.idNumber.isNotEmpty
+                          ? widget.user.idNumber
+                          : '—',
+                      textPrimary: textPrimary,
+                      textSecondary: textSecondary,
+                      iconColor: iconColor,
+                    ),
+                    if (widget.user.institution != null &&
+                        widget.user.institution!.isNotEmpty) ...[
+                      Divider(height: 20, color: dividerColor),
                       _InfoRow(
-                          icon: Icons.school_outlined,
-                          label: 'Institution',
-                          value: user.institution!),
+                        icon: Icons.school_outlined,
+                        label: isES ? 'Institución' : 'Institution',
+                        value: widget.user.institution!,
+                        textPrimary: textPrimary,
+                        textSecondary: textSecondary,
+                        iconColor: iconColor,
+                      ),
                     ],
-                    const Divider(height: 20),
+                    Divider(height: 20, color: dividerColor),
                     _InfoRow(
                       icon: Icons.cloud_outlined,
-                      label: 'Sync status',
-                      value: user.isSynced ? 'Synced' : 'Pending sync',
-                      valueColor: user.isSynced ? PaeColors.success : PaeColors.warning,
+                      label: isES ? 'Estado sync' : 'Sync status',
+                      value: widget.user.isSynced
+                          ? (isES ? 'Sincronizado' : 'Synced')
+                          : (isES ? 'Sync pendiente' : 'Pending sync'),
+                      valueColor: widget.user.isSynced
+                          ? PaeColors.success
+                          : PaeColors.warning,
+                      textPrimary: textPrimary,
+                      textSecondary: textSecondary,
+                      iconColor: iconColor,
                     ),
                   ],
                 ),
@@ -157,37 +214,116 @@ class ProfileScreen extends StatelessWidget {
           // ── Settings ─────────────────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
+                  // Dark mode
                   _SettingsTile(
                     icon: isDark
                         ? Icons.light_mode_outlined
                         : Icons.dark_mode_outlined,
                     label: S.settingsTheme,
+                    tileColor: tileColor,
+                    tileBorder: tileBorder,
+                    iconBg: iconBg,
+                    iconColor: iconColor,
+                    textColor: textPrimary,
                     trailing: Switch.adaptive(
                       value: isDark,
-                      onChanged: (_) => onToggleTheme(),
+                      onChanged: (_) {
+                        widget.onToggleTheme();
+                        setState(() {});
+                      },
                       activeColor: PaeColors.primary,
                     ),
                   ),
                   const SizedBox(height: 8),
+
+                  // Language toggle
+                  _SettingsTile(
+                    icon: Icons.language_rounded,
+                    label: S.settingsLanguage,
+                    tileColor: tileColor,
+                    tileBorder: tileBorder,
+                    iconBg: iconBg,
+                    iconColor: iconColor,
+                    textColor: textPrimary,
+                    trailing: GestureDetector(
+                      onTap: () {
+                        widget.onToggleLanguage();
+                        setState(() {});
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 220),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: PaeColors.primary.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: PaeColors.primary.withOpacity(0.3),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              isES ? '🇨🇴' : '🇺🇸',
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              isES ? 'ES' : 'EN',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 13,
+                                color: isDark
+                                    ? PaeColors.accent
+                                    : PaeColors.primary,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(Icons.swap_horiz_rounded,
+                                size: 14,
+                                color: isDark
+                                    ? PaeColors.accent
+                                    : PaeColors.primary),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Notifications
                   _SettingsTile(
                     icon: Icons.notifications_outlined,
                     label: S.profileNotifications,
-                    trailing: const Icon(Icons.chevron_right_rounded,
-                        color: PaeColors.inactive),
+                    tileColor: tileColor,
+                    tileBorder: tileBorder,
+                    iconBg: iconBg,
+                    iconColor: iconColor,
+                    textColor: textPrimary,
+                    trailing: Icon(Icons.chevron_right_rounded,
+                        color: textSecondary),
                     onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text(S.comingSoon))),
+                        SnackBar(content: Text(S.comingSoon))),
                   ),
                   const SizedBox(height: 8),
+
+                  // Sync
                   _SettingsTile(
                     icon: Icons.sync_rounded,
                     label: S.settingsSync,
-                    trailing: const Icon(Icons.chevron_right_rounded,
-                        color: PaeColors.inactive),
+                    tileColor: tileColor,
+                    tileBorder: tileBorder,
+                    iconBg: iconBg,
+                    iconColor: iconColor,
+                    textColor: textPrimary,
+                    trailing: Icon(Icons.chevron_right_rounded,
+                        color: textSecondary),
                     onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text(S.settingsSyncDone))),
+                        SnackBar(content: Text(S.settingsSyncDone))),
                   ),
                   const SizedBox(height: 24),
 
@@ -197,23 +333,22 @@ class ProfileScreen extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: PaeColors.error.withOpacity(0.07),
+                        color: PaeColors.error.withOpacity(isDark ? 0.15 : 0.07),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                            color: PaeColors.error.withOpacity(0.2)),
+                            color: PaeColors.error.withOpacity(0.3)),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.logout_rounded,
+                          const Icon(Icons.logout_rounded,
                               color: PaeColors.error, size: 20),
                           SizedBox(width: 10),
                           Text(S.profileLogout,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: PaeColors.error,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 15,
-                                fontFamily: PaeTypography.fontBody,
                               )),
                         ],
                       ),
@@ -221,9 +356,10 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
 
-                  Text('PAEGo v2.0.0',
-                      style: TextStyle(
-                          color: PaeColors.inactive, fontSize: 12)),
+                  Text(
+                    'PAEGo v2.0.0',
+                    style: TextStyle(color: textSecondary, fontSize: 12),
+                  ),
                   const SizedBox(height: 16),
                 ],
               ),
@@ -248,15 +384,15 @@ class ProfileScreen extends StatelessWidget {
       context: context,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(S.profileLogout,
-            style: TextStyle(
+        title: Text(S.profileLogout,
+            style: const TextStyle(
                 fontFamily: PaeTypography.fontDisplay,
                 fontWeight: FontWeight.w800)),
-        content: const Text(S.profileLogoutConfirm),
+        content: Text(S.profileLogoutConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(S.cancel),
+            child: Text(S.cancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -268,7 +404,7 @@ class ProfileScreen extends StatelessWidget {
               }
             },
             style: FilledButton.styleFrom(backgroundColor: PaeColors.error),
-            child: const Text(S.yes),
+            child: Text(S.yes),
           ),
         ],
       ),
@@ -276,55 +412,74 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
+// ── _InfoRow ─────────────────────────────────────────────────────────────────
+
 class _InfoRow extends StatelessWidget {
   const _InfoRow({
     required this.icon,
     required this.label,
     required this.value,
+    required this.textPrimary,
+    required this.textSecondary,
+    required this.iconColor,
     this.valueColor,
   });
 
   final IconData icon;
   final String label;
   final String value;
+  final Color textPrimary;
+  final Color textSecondary;
+  final Color iconColor;
   final Color? valueColor;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 18, color: PaeColors.primary),
+        Icon(icon, size: 18, color: iconColor),
         const SizedBox(width: 12),
-        Text(label,
-            style: const TextStyle(
-              color: PaeColors.textSecondary,
-              fontSize: 13,
-              fontFamily: PaeTypography.fontBody,
-            )),
+        Text(label, style: TextStyle(color: textSecondary, fontSize: 13)),
         const Spacer(),
-        Text(value,
+        Flexible(
+          child: Text(
+            value,
             style: TextStyle(
-              color: valueColor ?? PaeColors.textPrimary,
+              color: valueColor ?? textPrimary,
               fontWeight: FontWeight.w700,
               fontSize: 13,
-              fontFamily: PaeTypography.fontBody,
-            )),
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
       ],
     );
   }
 }
+
+// ── _SettingsTile ─────────────────────────────────────────────────────────────
 
 class _SettingsTile extends StatelessWidget {
   const _SettingsTile({
     required this.icon,
     required this.label,
     required this.trailing,
+    required this.tileColor,
+    required this.tileBorder,
+    required this.iconBg,
+    required this.iconColor,
+    required this.textColor,
     this.onTap,
   });
 
   final IconData icon;
   final String label;
   final Widget trailing;
+  final Color tileColor;
+  final Color tileBorder;
+  final Color iconBg;
+  final Color iconColor;
+  final Color textColor;
   final VoidCallback? onTap;
 
   @override
@@ -334,27 +489,27 @@ class _SettingsTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: tileColor,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: PaeColors.divider),
+          border: Border.all(color: tileBorder),
         ),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: PaeColors.primary.withOpacity(0.08),
+                color: iconBg,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: PaeColors.primary, size: 18),
+              child: Icon(icon, color: iconColor, size: 18),
             ),
             const SizedBox(width: 14),
             Expanded(
               child: Text(label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
-                    fontFamily: PaeTypography.fontBody,
+                    color: textColor,
                   )),
             ),
             trailing,

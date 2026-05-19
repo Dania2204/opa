@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen>
               ),
               child: SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 28, vertical: 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen>
                         children: [
                           Text(S.loginTitle,
                               style: Theme.of(context).textTheme.displaySmall),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           Text(S.loginSubtitle,
                               style: Theme.of(context)
                                   .textTheme
@@ -240,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen>
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(color: PaeColors.divider),
                             ),
-                            child: const Text(
+                            child: Text(
                               S.loginRegistrationDisabled,
                               textAlign: TextAlign.center,
                               style: TextStyle(
