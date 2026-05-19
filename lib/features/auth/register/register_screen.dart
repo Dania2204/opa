@@ -20,7 +20,7 @@ class RegisterScreen extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               child: Center(
                 child: Container(
                   padding: const EdgeInsets.all(24),
@@ -52,8 +52,8 @@ class RegisterScreen extends StatelessWidget {
                           size: 36,
                         ),
                       ),
-                      const SizedBox(height: 18),
-                      const Text(
+                      SizedBox(height: 18),
+                      Text(
                         S.registerDisabledTitle,
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -62,8 +62,8 @@ class RegisterScreen extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      const Text(
+                      SizedBox(height: 10),
+                      Text(
                         S.registerDisabledMessage,
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -71,7 +71,7 @@ class RegisterScreen extends StatelessWidget {
                           fontSize: 14,
                         ),
                       ),
-                      const SizedBox(height: 22),
+                      SizedBox(height: 22),
                       GradientButton(
                         label: S.registerBackToLogin,
                         icon: Icons.arrow_back_rounded,

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../app/theme.dart';
 import '../../core/l10n/app_strings.dart';
-import '../../core/router/app_router.dart';
 import '../../data/models/user_model.dart';
 import '../../data/models/user_role.dart';
-import '../../data/repositories/auth_service.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../map/map_screen.dart';
+import '../nutrition/nutrition_screen.dart';
 import '../reports/reports_screen.dart';
 import '../personnel/personnel_screen.dart';
 import '../profile/profile_screen.dart';
@@ -17,11 +16,15 @@ class HomeShell extends StatefulWidget {
     required this.user,
     required this.onToggleTheme,
     required this.themeMode,
+    required this.onToggleLanguage,
+    required this.locale,
   });
 
   final AppUser user;
   final VoidCallback onToggleTheme;
   final ThemeMode themeMode;
+  final VoidCallback onToggleLanguage;
+  final String locale;
 
   @override
   State<HomeShell> createState() => _HomeShellState();
@@ -30,13 +33,9 @@ class HomeShell extends StatefulWidget {
 class _HomeShellState extends State<HomeShell> {
   int _currentIndex = 0;
 
-  late final List<_TabDef> _tabs;
-
-  @override
-  void initState() {
-    super.initState();
+  List<_TabDef> _buildTabs() {
     final u = widget.user;
-    _tabs = [
+    return [
       _TabDef(
         icon: Icons.dashboard_rounded,
         label: S.navHome,
@@ -52,6 +51,11 @@ class _HomeShellState extends State<HomeShell> {
         label: S.navReports,
         screen: ReportsScreen(user: u),
       ),
+      _TabDef(
+        icon: Icons.restaurant_menu_rounded,
+        label: S.navNutrition,
+        screen: NutritionScreen(user: u),
+      ),
       if (u.role.canManagePersonnel)
         _TabDef(
           icon: Icons.people_rounded,
@@ -65,6 +69,12 @@ class _HomeShellState extends State<HomeShell> {
           user: u,
           onToggleTheme: widget.onToggleTheme,
           themeMode: widget.themeMode,
+          onToggleLanguage: () {
+            widget.onToggleLanguage();
+            // force home shell rebuild too
+            setState(() {});
+          },
+          locale: widget.locale,
         ),
       ),
     ];
@@ -72,14 +82,19 @@ class _HomeShellState extends State<HomeShell> {
 
   @override
   Widget build(BuildContext context) {
+    final tabs = _buildTabs();
+
+    // guard index if tabs shrink (shouldn't happen but defensive)
+    if (_currentIndex >= tabs.length) _currentIndex = 0;
+
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: _tabs.map((t) => t.screen).toList(),
+        children: tabs.map((t) => t.screen).toList(),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           boxShadow: [
             BoxShadow(
               color: PaeColors.primary.withOpacity(0.08),
@@ -91,7 +106,7 @@ class _HomeShellState extends State<HomeShell> {
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (i) => setState(() => _currentIndex = i),
-          items: _tabs
+          items: tabs
               .map((t) => BottomNavigationBarItem(
                     icon: Icon(t.icon),
                     label: t.label,

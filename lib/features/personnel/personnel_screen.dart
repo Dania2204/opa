@@ -50,12 +50,11 @@ class _PersonnelScreenState extends State<PersonnelScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: widget.user.role.canManageUsers
-          ? FloatingActionButton.extended(
+          ? FloatingActionButton(
               onPressed: _showCreateUserSheet,
               backgroundColor: PaeColors.primary,
               foregroundColor: Colors.white,
-              icon: const Icon(Icons.person_add_alt_1_rounded),
-              label: const Text(S.personnelAdd),
+              child: const Icon(Icons.add_rounded, size: 28),
             )
           : null,
       body: Column(
@@ -66,14 +65,16 @@ class _PersonnelScreenState extends State<PersonnelScreen> {
             height: 100,
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+            padding: EdgeInsets.fromLTRB(16, 14, 16, 0),
             child: TextField(
               onChanged: (v) => setState(() => _search = v),
               decoration: InputDecoration(
                 hintText: S.search,
                 prefixIcon: const Icon(Icons.search_rounded),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Theme.of(context).brightness == Brightness.dark
+                      ? PaeColors.cardDark
+                      : Colors.white,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 border: OutlineInputBorder(
@@ -92,7 +93,7 @@ class _PersonnelScreenState extends State<PersonnelScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           Expanded(
             child: _loading
                 ? const Center(
@@ -105,8 +106,8 @@ class _PersonnelScreenState extends State<PersonnelScreen> {
                           children: [
                             Icon(Icons.people_outline,
                                 size: 64, color: PaeColors.inactive),
-                            const SizedBox(height: 16),
-                            const Text(
+                            SizedBox(height: 16),
+                            Text(
                               S.personnelEmpty,
                               style: TextStyle(color: PaeColors.textSecondary),
                             ),
@@ -153,14 +154,14 @@ class _PersonnelScreenState extends State<PersonnelScreen> {
   void _confirmDelete(AppUser userToDelete) {
     if (!widget.user.role.canDeleteUsers) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(S.personnelAdminOnly)),
+        SnackBar(content: Text(S.personnelAdminOnly)),
       );
       return;
     }
 
     if (userToDelete.id == widget.user.id) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(S.personnelCannotDeleteSelf)),
+        SnackBar(content: Text(S.personnelCannotDeleteSelf)),
       );
       return;
     }
@@ -169,7 +170,7 @@ class _PersonnelScreenState extends State<PersonnelScreen> {
       context: context,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
+        title: Text(
           S.personnelDelete,
           style: TextStyle(
             fontFamily: PaeTypography.fontDisplay,
@@ -180,7 +181,7 @@ class _PersonnelScreenState extends State<PersonnelScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(S.cancel),
+            child: Text(S.cancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -189,7 +190,7 @@ class _PersonnelScreenState extends State<PersonnelScreen> {
               await _load();
             },
             style: FilledButton.styleFrom(backgroundColor: PaeColors.error),
-            child: const Text(S.delete),
+            child: Text(S.delete),
           ),
         ],
       ),
@@ -223,13 +224,19 @@ class _UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardColor = isDark ? PaeColors.cardDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withOpacity(0.08)
+        : PaeColors.divider;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: PaeColors.divider),
+        border: Border.all(color: borderColor),
         boxShadow: [
           BoxShadow(
             color: PaeColors.primary.withOpacity(0.04),
@@ -412,8 +419,8 @@ class _CreateUserSheetState extends State<_CreateUserSheet> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              const Text(
+              SizedBox(height: 20),
+              Text(
                 S.personnelAdd,
                 style: TextStyle(
                   fontFamily: PaeTypography.fontDisplay,
@@ -421,35 +428,35 @@ class _CreateUserSheetState extends State<_CreateUserSheet> {
                   fontWeight: FontWeight.w800,
                 ),
               ),
-              const SizedBox(height: 18),
+              SizedBox(height: 18),
               _field(
                 _nameCtrl,
                 S.registerFullName,
                 Icons.person_outline_rounded,
               ),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               _field(
                 _loginCtrl,
                 S.loginEmail,
                 Icons.alternate_email_rounded,
               ),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               _field(
                 _phoneCtrl,
                 S.registerPhone,
                 Icons.phone_outlined,
                 type: TextInputType.phone,
               ),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               _field(
                 _idCtrl,
                 S.registerIdNumber,
                 Icons.badge_outlined,
               ),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               DropdownButtonFormField<UserRole>(
                 value: _selectedRole,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: S.registerRole,
                   prefixIcon: Icon(Icons.admin_panel_settings_outlined),
                 ),
@@ -466,14 +473,14 @@ class _CreateUserSheetState extends State<_CreateUserSheet> {
                   setState(() => _selectedRole = value);
                 },
               ),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               _field(
                 _institutionCtrl,
                 S.registerInstitution,
                 Icons.school_outlined,
                 required: false,
               ),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               TextFormField(
                 controller: _passCtrl,
                 obscureText: _obscurePass,
@@ -496,7 +503,7 @@ class _CreateUserSheetState extends State<_CreateUserSheet> {
                   return null;
                 },
               ),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               TextFormField(
                 controller: _confirmCtrl,
                 obscureText: _obscureConfirm,
@@ -536,7 +543,7 @@ class _CreateUserSheetState extends State<_CreateUserSheet> {
                   ),
                 ),
               ],
-              const SizedBox(height: 22),
+              SizedBox(height: 22),
               GradientButton(
                 label: S.personnelAdd,
                 icon: Icons.person_add_alt_1_rounded,
