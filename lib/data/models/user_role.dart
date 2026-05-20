@@ -32,9 +32,10 @@ extension UserRoleX on UserRole {
   bool get canDeleteUsers => canManageUsers;
 
   bool get canCreateOrders =>
-      this == UserRole.superAdmin || this == UserRole.admin;
+      this == UserRole.superAdmin || this == UserRole.admin || this == UserRole.rector;
 
-  bool get canAddSchoolLocation => this == UserRole.rector;
+  bool get canAddSchoolLocation =>
+      this == UserRole.superAdmin || this == UserRole.admin || this == UserRole.rector;
 
   bool get canDriveRoute => this == UserRole.driver;
 
