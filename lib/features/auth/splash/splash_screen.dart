@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../app/theme.dart';
 import '../../../core/router/app_router.dart';
 import '../../../data/repositories/auth_service.dart';
@@ -65,36 +66,47 @@ class _SplashScreenState extends State<SplashScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  // ── Logo ─────────────────────────────────────────────
                   Container(
-                    width: 96,
-                    height: 96,
+                    width: 110,
+                    height: 110,
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.15),
                       shape: BoxShape.circle,
                       border: Border.all(
                           color: Colors.white.withOpacity(0.4), width: 2),
                     ),
-                    child: const Icon(Icons.local_shipping_rounded,
-                        size: 48, color: Colors.white),
+                    padding: const EdgeInsets.all(16),
+                    child: Image.asset(
+                      'assets/images/pae_logo.png',
+                      fit: BoxFit.contain,
+                      errorBuilder: (_, __, ___) => const Icon(
+                        Icons.local_shipping_rounded,
+                        size: 48,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 24),
-                  const Text('PAEGo',
-                      style: TextStyle(
-                        fontFamily: PaeTypography.fontDisplay,
-                        fontSize: 40,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
-                        letterSpacing: -1,
-                      )),
+                  Text(
+                    'PAEGo',
+                    style: GoogleFonts.nunito(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                      letterSpacing: -1,
+                    ),
+                  ),
                   const SizedBox(height: 6),
-                  Text('School Feeding Programme',
-                      style: TextStyle(
-                        fontFamily: PaeTypography.fontBody,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white.withOpacity(0.8),
-                        letterSpacing: 0.5,
-                      )),
+                  Text(
+                    'Programa de Alimentación Escolar',
+                    style: GoogleFonts.nunito(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white.withOpacity(0.85),
+                      letterSpacing: 0.3,
+                    ),
+                  ),
                   const SizedBox(height: 48),
                   SizedBox(
                     width: 28,

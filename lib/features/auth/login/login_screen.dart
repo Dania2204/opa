@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../app/theme.dart';
 import '../../../core/l10n/app_strings.dart';
 import '../../../core/router/app_router.dart';
@@ -84,31 +85,43 @@ class _LoginScreenState extends State<LoginScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // ── Logo ───────────────────────────────────────
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        width: 56,
+                        height: 56,
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.15),
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Icon(Icons.local_shipping_rounded,
-                            color: Colors.white, size: 32),
+                        child: Image.asset(
+                          'assets/images/pae_logo.png',
+                          fit: BoxFit.contain,
+                          errorBuilder: (_, __, ___) => const Icon(
+                            Icons.local_shipping_rounded,
+                            color: Colors.white,
+                            size: 32,
+                          ),
+                        ),
                       ),
                       const Spacer(),
-                      const Text('PAEGo',
-                          style: TextStyle(
-                            fontFamily: PaeTypography.fontDisplay,
-                            fontSize: 36,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white,
-                            letterSpacing: -1,
-                          )),
-                      Text(S.appTagline,
-                          style: TextStyle(
-                            fontFamily: PaeTypography.fontBody,
-                            color: Colors.white.withOpacity(0.8),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          )),
+                      Text(
+                        'PAEGo',
+                        style: GoogleFonts.nunito(
+                          fontSize: 36,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                          letterSpacing: -1,
+                        ),
+                      ),
+                      Text(
+                        S.appTagline,
+                        style: GoogleFonts.nunito(
+                          color: Colors.white.withOpacity(0.85),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                       const SizedBox(height: 16),
                     ],
                   ),
