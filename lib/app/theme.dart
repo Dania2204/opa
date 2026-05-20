@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // ── Brand Palette ────────────────────────────────────────────────────────────
 class PaeColors {
@@ -71,11 +72,14 @@ class PaeColors {
 
 // ── Typography ───────────────────────────────────────────────────────────────
 class PaeTypography {
-  // Using Google Fonts via CDN approach — fallbacks built in
   static const fontDisplay = 'Nunito';
   static const fontBody = 'Nunito';
 
-  static TextTheme get textTheme => const TextTheme(
+  // Use GoogleFonts for reliable Nunito loading (no pubspec font assets needed)
+  static TextStyle display(TextStyle base) => GoogleFonts.nunito(textStyle: base);
+  static TextStyle body(TextStyle base) => GoogleFonts.nunito(textStyle: base);
+
+  static TextTheme get textTheme => GoogleFonts.nunitoTextTheme(const TextTheme(
     displayLarge: TextStyle(
       fontFamily: fontDisplay,
       fontSize: 32,
@@ -157,7 +161,7 @@ class PaeTypography {
       fontWeight: FontWeight.w500,
       letterSpacing: 0.8,
     ),
-  );
+  ));
 }
 
 // ── Theme Builders ────────────────────────────────────────────────────────────

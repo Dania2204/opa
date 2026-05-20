@@ -6,6 +6,110 @@ import '../../app/theme.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../../data/models/user_model.dart';
 
+// ── Producto alimenticio (no plato) ──────────────────────────────────────────
+
+class FoodProduct {
+  const FoodProduct({
+    required this.name,
+    required this.category,
+    required this.unit,
+    required this.caloriesPer100g,
+    required this.proteinPer100g,
+    required this.carbsPer100g,
+    required this.fatPer100g,
+    this.icon = Icons.set_meal_rounded,
+  });
+
+  final String name;
+  final String category;
+  final String unit; // 'g' o 'ml'
+  final double caloriesPer100g;
+  final double proteinPer100g;
+  final double carbsPer100g;
+  final double fatPer100g;
+  final IconData icon;
+}
+
+// ── Base de productos PAE Colombia ───────────────────────────────────────────
+
+const List<FoodProduct> kFoodProducts = [
+  // Cereales y tubérculos
+  FoodProduct(name: 'Arroz blanco', category: 'Cereales', unit: 'g', caloriesPer100g: 130, proteinPer100g: 2.7, carbsPer100g: 28.2, fatPer100g: 0.3, icon: Icons.grain_rounded),
+  FoodProduct(name: 'Arroz integral', category: 'Cereales', unit: 'g', caloriesPer100g: 123, proteinPer100g: 2.7, carbsPer100g: 25.6, fatPer100g: 1.0, icon: Icons.grain_rounded),
+  FoodProduct(name: 'Papa pastusa', category: 'Tubérculos', unit: 'g', caloriesPer100g: 77, proteinPer100g: 2.0, carbsPer100g: 17.0, fatPer100g: 0.1, icon: Icons.set_meal_rounded),
+  FoodProduct(name: 'Papa criolla', category: 'Tubérculos', unit: 'g', caloriesPer100g: 70, proteinPer100g: 1.9, carbsPer100g: 15.4, fatPer100g: 0.1, icon: Icons.set_meal_rounded),
+  FoodProduct(name: 'Yuca', category: 'Tubérculos', unit: 'g', caloriesPer100g: 160, proteinPer100g: 1.4, carbsPer100g: 38.1, fatPer100g: 0.3, icon: Icons.set_meal_rounded),
+  FoodProduct(name: 'Plátano maduro', category: 'Tubérculos', unit: 'g', caloriesPer100g: 89, proteinPer100g: 1.1, carbsPer100g: 22.8, fatPer100g: 0.3, icon: Icons.set_meal_rounded),
+  FoodProduct(name: 'Plátano verde', category: 'Tubérculos', unit: 'g', caloriesPer100g: 122, proteinPer100g: 1.3, carbsPer100g: 31.9, fatPer100g: 0.4, icon: Icons.set_meal_rounded),
+  FoodProduct(name: 'Maíz', category: 'Cereales', unit: 'g', caloriesPer100g: 365, proteinPer100g: 9.4, carbsPer100g: 74.3, fatPer100g: 4.7, icon: Icons.grain_rounded),
+  FoodProduct(name: 'Avena', category: 'Cereales', unit: 'g', caloriesPer100g: 389, proteinPer100g: 17.0, carbsPer100g: 66.3, fatPer100g: 6.9, icon: Icons.grain_rounded),
+  FoodProduct(name: 'Pan blanco', category: 'Cereales', unit: 'g', caloriesPer100g: 265, proteinPer100g: 9.0, carbsPer100g: 49.0, fatPer100g: 3.2, icon: Icons.bakery_dining_rounded),
+  FoodProduct(name: 'Arepa de maíz', category: 'Cereales', unit: 'g', caloriesPer100g: 200, proteinPer100g: 4.5, carbsPer100g: 40.0, fatPer100g: 2.5, icon: Icons.grain_rounded),
+  FoodProduct(name: 'Pasta', category: 'Cereales', unit: 'g', caloriesPer100g: 131, proteinPer100g: 5.0, carbsPer100g: 25.0, fatPer100g: 1.1, icon: Icons.ramen_dining_rounded),
+
+  // Leguminosas
+  FoodProduct(name: 'Fríjol negro', category: 'Leguminosas', unit: 'g', caloriesPer100g: 132, proteinPer100g: 8.9, carbsPer100g: 23.7, fatPer100g: 0.5, icon: Icons.spa_rounded),
+  FoodProduct(name: 'Fríjol rojo', category: 'Leguminosas', unit: 'g', caloriesPer100g: 127, proteinPer100g: 8.7, carbsPer100g: 22.8, fatPer100g: 0.5, icon: Icons.spa_rounded),
+  FoodProduct(name: 'Lenteja', category: 'Leguminosas', unit: 'g', caloriesPer100g: 116, proteinPer100g: 9.0, carbsPer100g: 20.1, fatPer100g: 0.4, icon: Icons.spa_rounded),
+  FoodProduct(name: 'Garbanzo', category: 'Leguminosas', unit: 'g', caloriesPer100g: 164, proteinPer100g: 8.9, carbsPer100g: 27.4, fatPer100g: 2.6, icon: Icons.spa_rounded),
+  FoodProduct(name: 'Arveja', category: 'Leguminosas', unit: 'g', caloriesPer100g: 81, proteinPer100g: 5.4, carbsPer100g: 14.5, fatPer100g: 0.4, icon: Icons.spa_rounded),
+
+  // Proteína animal
+  FoodProduct(name: 'Pollo (pechuga)', category: 'Carnes', unit: 'g', caloriesPer100g: 165, proteinPer100g: 31.0, carbsPer100g: 0.0, fatPer100g: 3.6, icon: Icons.set_meal_rounded),
+  FoodProduct(name: 'Pollo (muslo)', category: 'Carnes', unit: 'g', caloriesPer100g: 209, proteinPer100g: 26.0, carbsPer100g: 0.0, fatPer100g: 10.9, icon: Icons.set_meal_rounded),
+  FoodProduct(name: 'Carne de res', category: 'Carnes', unit: 'g', caloriesPer100g: 250, proteinPer100g: 26.0, carbsPer100g: 0.0, fatPer100g: 15.0, icon: Icons.set_meal_rounded),
+  FoodProduct(name: 'Cerdo', category: 'Carnes', unit: 'g', caloriesPer100g: 242, proteinPer100g: 27.0, carbsPer100g: 0.0, fatPer100g: 14.0, icon: Icons.set_meal_rounded),
+  FoodProduct(name: 'Tilapia', category: 'Pescados', unit: 'g', caloriesPer100g: 96, proteinPer100g: 20.1, carbsPer100g: 0.0, fatPer100g: 1.7, icon: Icons.set_meal_rounded),
+  FoodProduct(name: 'Atún en agua', category: 'Pescados', unit: 'g', caloriesPer100g: 116, proteinPer100g: 25.5, carbsPer100g: 0.0, fatPer100g: 1.0, icon: Icons.set_meal_rounded),
+  FoodProduct(name: 'Huevo entero', category: 'Huevos', unit: 'g', caloriesPer100g: 155, proteinPer100g: 13.0, carbsPer100g: 1.1, fatPer100g: 11.0, icon: Icons.egg_rounded),
+  FoodProduct(name: 'Sardina en lata', category: 'Pescados', unit: 'g', caloriesPer100g: 208, proteinPer100g: 24.6, carbsPer100g: 0.0, fatPer100g: 11.5, icon: Icons.set_meal_rounded),
+
+  // Lácteos
+  FoodProduct(name: 'Leche entera', category: 'Lácteos', unit: 'ml', caloriesPer100g: 61, proteinPer100g: 3.2, carbsPer100g: 4.8, fatPer100g: 3.3, icon: Icons.local_drink_rounded),
+  FoodProduct(name: 'Leche descremada', category: 'Lácteos', unit: 'ml', caloriesPer100g: 35, proteinPer100g: 3.4, carbsPer100g: 5.0, fatPer100g: 0.2, icon: Icons.local_drink_rounded),
+  FoodProduct(name: 'Yogur natural', category: 'Lácteos', unit: 'g', caloriesPer100g: 61, proteinPer100g: 3.5, carbsPer100g: 4.7, fatPer100g: 3.3, icon: Icons.local_drink_rounded),
+  FoodProduct(name: 'Queso blanco', category: 'Lácteos', unit: 'g', caloriesPer100g: 264, proteinPer100g: 18.0, carbsPer100g: 3.4, fatPer100g: 20.0, icon: Icons.set_meal_rounded),
+  FoodProduct(name: 'Queso doble crema', category: 'Lácteos', unit: 'g', caloriesPer100g: 350, proteinPer100g: 22.0, carbsPer100g: 2.0, fatPer100g: 28.0, icon: Icons.set_meal_rounded),
+
+  // Verduras
+  FoodProduct(name: 'Zanahoria', category: 'Verduras', unit: 'g', caloriesPer100g: 41, proteinPer100g: 0.9, carbsPer100g: 9.6, fatPer100g: 0.2, icon: Icons.eco_rounded),
+  FoodProduct(name: 'Ahuyama (calabaza)', category: 'Verduras', unit: 'g', caloriesPer100g: 26, proteinPer100g: 1.0, carbsPer100g: 6.5, fatPer100g: 0.1, icon: Icons.eco_rounded),
+  FoodProduct(name: 'Tomate', category: 'Verduras', unit: 'g', caloriesPer100g: 18, proteinPer100g: 0.9, carbsPer100g: 3.9, fatPer100g: 0.2, icon: Icons.eco_rounded),
+  FoodProduct(name: 'Cebolla cabezona', category: 'Verduras', unit: 'g', caloriesPer100g: 40, proteinPer100g: 1.1, carbsPer100g: 9.3, fatPer100g: 0.1, icon: Icons.eco_rounded),
+  FoodProduct(name: 'Espinaca', category: 'Verduras', unit: 'g', caloriesPer100g: 23, proteinPer100g: 2.9, carbsPer100g: 3.6, fatPer100g: 0.4, icon: Icons.eco_rounded),
+  FoodProduct(name: 'Brócoli', category: 'Verduras', unit: 'g', caloriesPer100g: 34, proteinPer100g: 2.8, carbsPer100g: 6.6, fatPer100g: 0.4, icon: Icons.eco_rounded),
+  FoodProduct(name: 'Habichuela (vainita)', category: 'Verduras', unit: 'g', caloriesPer100g: 31, proteinPer100g: 1.8, carbsPer100g: 7.1, fatPer100g: 0.1, icon: Icons.eco_rounded),
+  FoodProduct(name: 'Remolacha', category: 'Verduras', unit: 'g', caloriesPer100g: 43, proteinPer100g: 1.6, carbsPer100g: 9.6, fatPer100g: 0.2, icon: Icons.eco_rounded),
+  FoodProduct(name: 'Pepino', category: 'Verduras', unit: 'g', caloriesPer100g: 15, proteinPer100g: 0.7, carbsPer100g: 3.6, fatPer100g: 0.1, icon: Icons.eco_rounded),
+
+  // Frutas
+  FoodProduct(name: 'Banano', category: 'Frutas', unit: 'g', caloriesPer100g: 89, proteinPer100g: 1.1, carbsPer100g: 23.0, fatPer100g: 0.3, icon: Icons.local_florist_rounded),
+  FoodProduct(name: 'Mango', category: 'Frutas', unit: 'g', caloriesPer100g: 60, proteinPer100g: 0.8, carbsPer100g: 15.0, fatPer100g: 0.4, icon: Icons.local_florist_rounded),
+  FoodProduct(name: 'Naranja', category: 'Frutas', unit: 'g', caloriesPer100g: 47, proteinPer100g: 0.9, carbsPer100g: 11.8, fatPer100g: 0.1, icon: Icons.local_florist_rounded),
+  FoodProduct(name: 'Papaya', category: 'Frutas', unit: 'g', caloriesPer100g: 43, proteinPer100g: 0.5, carbsPer100g: 10.8, fatPer100g: 0.3, icon: Icons.local_florist_rounded),
+  FoodProduct(name: 'Guayaba', category: 'Frutas', unit: 'g', caloriesPer100g: 68, proteinPer100g: 2.6, carbsPer100g: 14.3, fatPer100g: 1.0, icon: Icons.local_florist_rounded),
+  FoodProduct(name: 'Lulo', category: 'Frutas', unit: 'g', caloriesPer100g: 31, proteinPer100g: 0.6, carbsPer100g: 7.6, fatPer100g: 0.1, icon: Icons.local_florist_rounded),
+  FoodProduct(name: 'Maracuyá', category: 'Frutas', unit: 'g', caloriesPer100g: 97, proteinPer100g: 2.2, carbsPer100g: 23.4, fatPer100g: 0.7, icon: Icons.local_florist_rounded),
+  FoodProduct(name: 'Piña', category: 'Frutas', unit: 'g', caloriesPer100g: 50, proteinPer100g: 0.5, carbsPer100g: 13.1, fatPer100g: 0.1, icon: Icons.local_florist_rounded),
+  FoodProduct(name: 'Mandarina', category: 'Frutas', unit: 'g', caloriesPer100g: 53, proteinPer100g: 0.8, carbsPer100g: 13.3, fatPer100g: 0.3, icon: Icons.local_florist_rounded),
+
+  // Aceites y grasas
+  FoodProduct(name: 'Aceite vegetal', category: 'Aceites', unit: 'ml', caloriesPer100g: 884, proteinPer100g: 0.0, carbsPer100g: 0.0, fatPer100g: 100.0, icon: Icons.opacity_rounded),
+  FoodProduct(name: 'Mantequilla', category: 'Aceites', unit: 'g', caloriesPer100g: 717, proteinPer100g: 0.9, carbsPer100g: 0.1, fatPer100g: 81.0, icon: Icons.opacity_rounded),
+
+  // Azúcares
+  FoodProduct(name: 'Azúcar', category: 'Azúcares', unit: 'g', caloriesPer100g: 387, proteinPer100g: 0.0, carbsPer100g: 100.0, fatPer100g: 0.0, icon: Icons.cookie_rounded),
+  FoodProduct(name: 'Panela', category: 'Azúcares', unit: 'g', caloriesPer100g: 380, proteinPer100g: 0.3, carbsPer100g: 98.0, fatPer100g: 0.1, icon: Icons.cookie_rounded),
+];
+
+// ── Categorías únicas ────────────────────────────────────────────────────────
+
+List<String> get kCategories {
+  final cats = kFoodProducts.map((p) => p.category).toSet().toList();
+  cats.sort();
+  return ['Todos', ...cats];
+}
+
 // ── Model ────────────────────────────────────────────────────────────────────
 
 class FoodEntry {
@@ -95,7 +199,7 @@ class _NutritionScreenState extends State<NutritionScreen>
         role: 'assistant',
         text: '¡Hola! Soy tu asistente de nutrición del PAEGo. '
             'Puedo darte recetas saludables y consejos de nutrición '
-            'basados en los alimentos que hayas registrado. '
+            'basados en los productos que hayas registrado. '
             '¿En qué te puedo ayudar hoy?',
       ),
     ];
@@ -132,10 +236,9 @@ class _NutritionScreenState extends State<NutritionScreen>
     _aiChatCtrl.clear();
     _scrollToBottom();
 
-    // Build context summary of today's food
     final foodContext = _entries.isEmpty
-        ? 'No hay alimentos registrados hoy.'
-        : 'Alimentos registrados hoy:\n' +
+        ? 'No hay productos registrados hoy.'
+        : 'Productos registrados hoy:\n' +
             _entries
                 .map((e) =>
                     '- ${e.name} (${e.portion}) — ${e.calories.toStringAsFixed(0)} kcal, '
@@ -151,7 +254,8 @@ class _NutritionScreenState extends State<NutritionScreen>
     final systemPrompt = '''
 Eres un nutricionista experto del Programa de Alimentación Escolar (PAE) en Colombia.
 Tu rol es ayudar al usuario ${widget.user.fullName} a llevar una dieta saludable y equilibrada.
-Puedes dar recetas, consejos de nutrición, análisis de la dieta del día y sugerencias.
+El usuario registra productos alimenticios individuales (ingredientes), no platos preparados.
+Puedes dar recetas combinando los productos registrados, consejos de nutrición, análisis de la dieta y sugerencias.
 Responde siempre en español, de forma amigable, clara y práctica.
 Considera las tradiciones alimentarias colombianas cuando sea relevante.
 
@@ -159,44 +263,64 @@ Contexto nutricional actual del usuario:
 $foodContext
 ''';
 
-    // Build messages history for API
-    final apiMessages = <Map<String, String>>[];
-    for (final msg in _aiMessages) {
-      apiMessages.add({'role': msg.role, 'content': msg.text});
+    const geminiApiKey = 'AIzaSyBN5q-ndv00o91fGS0f_2VG_WfV0_1dHVE';
+
+    final geminiContents = <Map<String, dynamic>>[];
+    for (int i = 1; i < _aiMessages.length; i++) {
+      final msg = _aiMessages[i];
+      geminiContents.add({
+        'role': msg.role == 'user' ? 'user' : 'model',
+        'parts': [{'text': msg.text}],
+      });
     }
+    geminiContents.add({
+      'role': 'user',
+      'parts': [{'text': userText}],
+    });
 
     try {
       final response = await http.post(
-        Uri.parse('https://api.anthropic.com/v1/messages'),
-        headers: {
-          'Content-Type': 'application/json',
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true',
-        },
+        Uri.parse(
+          'https://generativelanguage.googleapis.com/v1beta/models/'
+          'gemini-2.0-flash:generateContent?key=$geminiApiKey',
+        ),
+        headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'model': 'claude-sonnet-4-20250514',
-          'max_tokens': 1024,
-          'system': systemPrompt,
-          'messages': apiMessages,
+          'system_instruction': {
+            'parts': [{'text': systemPrompt}],
+          },
+          'contents': geminiContents,
+          'generationConfig': {
+            'maxOutputTokens': 1024,
+            'temperature': 0.7,
+          },
         }),
       );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
-        final content = data['content'] as List<dynamic>;
-        final text = content
-            .where((c) => c['type'] == 'text')
-            .map((c) => c['text'] as String)
+        final candidates = data['candidates'] as List<dynamic>;
+        final text = candidates
+            .map((c) => c['content']['parts'] as List<dynamic>)
+            .expand((parts) => parts)
+            .map((p) => p['text'] as String)
             .join('');
         setState(() {
           _aiMessages.add(_AiMessage(role: 'assistant', text: text));
+        });
+      } else if (response.statusCode == 400) {
+        setState(() {
+          _aiMessages.add(_AiMessage(
+            role: 'assistant',
+            text: '⚠️ API key no configurada. En nutrition_screen.dart reemplaza AQUI_TU_GEMINI_API_KEY con tu key de aistudio.google.com',
+            isError: true,
+          ));
         });
       } else {
         setState(() {
           _aiMessages.add(_AiMessage(
             role: 'assistant',
-            text: 'Lo siento, tuve un problema al procesar tu consulta. '
-                'Por favor intenta de nuevo.',
+            text: 'Error ${response.statusCode}. Verifica tu conexión e intenta de nuevo.',
             isError: true,
           ));
         });
@@ -234,7 +358,7 @@ $foodContext
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => _AddFoodSheet(
+      builder: (_) => _AddProductSheet(
         onAdd: (entry) {
           setState(() => _entries.add(entry));
         },
@@ -258,13 +382,13 @@ $foodContext
           // Header
           GradientHeader(
             title: 'Nutrición',
-            subtitle: 'Registro de alimentos y asesoría IA',
+            subtitle: 'Registro de productos y asesoría IA',
             height: 110,
             actions: [
               IconButton(
                 icon: const Icon(Icons.add_rounded, color: Colors.white, size: 28),
                 onPressed: _showAddFoodDialog,
-                tooltip: 'Registrar alimento',
+                tooltip: 'Registrar producto',
               ),
             ],
           ),
@@ -278,7 +402,7 @@ $foodContext
               unselectedLabelColor: PaeColors.textSecondary,
               indicatorColor: PaeColors.primary,
               tabs: const [
-                Tab(icon: Icon(Icons.restaurant_menu_rounded), text: 'Registro'),
+                Tab(icon: Icon(Icons.inventory_2_rounded), text: 'Productos'),
                 Tab(icon: Icon(Icons.smart_toy_rounded), text: 'Asistente IA'),
               ],
             ),
@@ -342,14 +466,14 @@ $foodContext
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
-                        Icons.fastfood_rounded,
+                        Icons.inventory_2_rounded,
                         size: 56,
                         color: PaeColors.primary,
                       ),
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      'Sin alimentos registrados',
+                      'Sin productos registrados',
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 16,
@@ -358,7 +482,7 @@ $foodContext
                     ),
                     const SizedBox(height: 8),
                     const Text(
-                      'Toca + para añadir tu primer alimento\ndel día',
+                      'Toca + para añadir un producto\nalimenticio del día',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: PaeColors.textSecondary,
@@ -450,17 +574,17 @@ $foodContext
               children: [
                 _QuickChip(
                   label: '¿Cómo está mi dieta hoy?',
-                  onTap: () => _sendAiMessage('¿Cómo está mi dieta hoy según lo que he comido?'),
+                  onTap: () => _sendAiMessage('¿Cómo está mi dieta hoy según los productos que he consumido?'),
                 ),
                 _QuickChip(
-                  label: 'Dame una receta con lo que tengo',
+                  label: '¿Qué receta puedo hacer?',
                   onTap: () => _sendAiMessage(
-                      'Con los alimentos que he registrado hoy, ¿qué receta saludable me recomiendas para completar el día?'),
+                      'Con los productos que he registrado hoy, ¿qué receta saludable me recomiendas preparar?'),
                 ),
                 _QuickChip(
                   label: 'Consejo nutricional',
                   onTap: () => _sendAiMessage(
-                      'Basándote en lo que he comido hoy, dame un consejo de nutrición personalizado.'),
+                      'Basándote en los productos que he consumido hoy, dame un consejo de nutrición personalizado.'),
                 ),
               ],
             ),
@@ -713,48 +837,65 @@ class _FoodEntryTile extends StatelessWidget {
   }
 }
 
-// ── Add Food Sheet ────────────────────────────────────────────────────────────
+// ── Add Product Sheet ─────────────────────────────────────────────────────────
+// Flujo: 1) Buscar/seleccionar producto  2) Indicar cantidad y comida
 
-class _AddFoodSheet extends StatefulWidget {
-  const _AddFoodSheet({required this.onAdd});
-
+class _AddProductSheet extends StatefulWidget {
+  const _AddProductSheet({required this.onAdd});
   final void Function(FoodEntry) onAdd;
 
   @override
-  State<_AddFoodSheet> createState() => _AddFoodSheetState();
+  State<_AddProductSheet> createState() => _AddProductSheetState();
 }
 
-class _AddFoodSheetState extends State<_AddFoodSheet> {
-  final _nameCtrl = TextEditingController();
-  final _portionCtrl = TextEditingController();
-  final _caloriesCtrl = TextEditingController();
-  final _proteinCtrl = TextEditingController();
-  final _carbsCtrl = TextEditingController();
-  final _fatCtrl = TextEditingController();
+class _AddProductSheetState extends State<_AddProductSheet> {
+  // Paso 1: selección de producto
+  FoodProduct? _selected;
+  String _searchQuery = '';
+  String _selectedCategory = 'Todos';
+  final _searchCtrl = TextEditingController();
+
+  // Paso 2: cantidad y comida
+  final _amountCtrl = TextEditingController(text: '100');
   MealType _selectedMeal = MealType.lunch;
 
   @override
   void dispose() {
-    _nameCtrl.dispose();
-    _portionCtrl.dispose();
-    _caloriesCtrl.dispose();
-    _proteinCtrl.dispose();
-    _carbsCtrl.dispose();
-    _fatCtrl.dispose();
+    _searchCtrl.dispose();
+    _amountCtrl.dispose();
     super.dispose();
   }
 
-  void _submit() {
-    if (_nameCtrl.text.trim().isEmpty) return;
+  List<FoodProduct> get _filtered {
+    return kFoodProducts.where((p) {
+      final matchCat = _selectedCategory == 'Todos' || p.category == _selectedCategory;
+      final matchSearch = _searchQuery.isEmpty ||
+          p.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          p.category.toLowerCase().contains(_searchQuery.toLowerCase());
+      return matchCat && matchSearch;
+    }).toList();
+  }
+
+  // Valores calculados según cantidad ingresada
+  double get _parsedAmount => double.tryParse(_amountCtrl.text) ?? 100;
+  double get _calcCalories => (_selected!.caloriesPer100g * _parsedAmount) / 100;
+  double get _calcProtein  => (_selected!.proteinPer100g  * _parsedAmount) / 100;
+  double get _calcCarbs    => (_selected!.carbsPer100g    * _parsedAmount) / 100;
+  double get _calcFat      => (_selected!.fatPer100g      * _parsedAmount) / 100;
+
+  void _confirm() {
+    if (_selected == null) return;
+    final amount = _parsedAmount;
+    final unit = _selected!.unit;
 
     final entry = FoodEntry(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      name: _nameCtrl.text.trim(),
-      calories: double.tryParse(_caloriesCtrl.text) ?? 0,
-      protein: double.tryParse(_proteinCtrl.text) ?? 0,
-      carbs: double.tryParse(_carbsCtrl.text) ?? 0,
-      fat: double.tryParse(_fatCtrl.text) ?? 0,
-      portion: _portionCtrl.text.trim().isEmpty ? '1 porción' : _portionCtrl.text.trim(),
+      name: _selected!.name,
+      calories: _calcCalories,
+      protein: _calcProtein,
+      carbs: _calcCarbs,
+      fat: _calcFat,
+      portion: '${amount.toStringAsFixed(0)} $unit',
       mealType: _selectedMeal,
       registeredAt: DateTime.now(),
     );
@@ -766,179 +907,397 @@ class _AddFoodSheetState extends State<_AddFoodSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
-        padding: const EdgeInsets.all(24),
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.88,
+        ),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: _selected == null ? _buildStep1() : _buildStep2(),
+      ),
+    );
+  }
+
+  // ── Paso 1: Buscar y seleccionar producto ─────────────────────────────────
+
+  Widget _buildStep1() {
+    final filtered = _filtered;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Título
+        Row(
           children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: PaeColors.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(Icons.add_circle_outline_rounded,
-                      color: PaeColors.primary),
-                ),
-                const SizedBox(width: 12),
-                const Text(
-                  'Registrar alimento',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 18,
-                    fontFamily: PaeTypography.fontDisplay,
-                  ),
-                ),
-              ],
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: PaeColors.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(Icons.search_rounded, color: PaeColors.primary),
             ),
-            const SizedBox(height: 20),
-
-            // Meal type selector
+            const SizedBox(width: 12),
             const Text(
-              'Tipo de comida',
+              'Seleccionar producto',
               style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 13,
-                color: PaeColors.textSecondary,
+                fontWeight: FontWeight.w800,
+                fontSize: 18,
+                fontFamily: PaeTypography.fontDisplay,
               ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: MealType.values.map((m) {
-                final selected = m == _selectedMeal;
-                return Expanded(
-                  child: GestureDetector(
-                    onTap: () => setState(() => _selectedMeal = m),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      margin: const EdgeInsets.only(right: 6),
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      decoration: BoxDecoration(
-                        color: selected
-                            ? m.color.withOpacity(0.15)
-                            : Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: selected ? m.color : Colors.transparent,
-                          width: 1.5,
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          Icon(m.icon, color: m.color, size: 18),
-                          const SizedBox(height: 2),
-                          Text(
-                            m.label,
-                            style: TextStyle(
-                              fontSize: 9,
-                              fontWeight: FontWeight.w600,
-                              color: selected ? m.color : PaeColors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 16),
-
-            // Fields
-            TextField(
-              controller: _nameCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Nombre del alimento *',
-                prefixIcon: Icon(Icons.restaurant_rounded),
-                hintText: 'Ej: Arroz con pollo',
-              ),
-              textCapitalization: TextCapitalization.sentences,
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _portionCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Porción',
-                prefixIcon: Icon(Icons.scale_rounded),
-                hintText: 'Ej: 1 plato mediano, 200g',
-              ),
-            ),
-            const SizedBox(height: 12),
-
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _caloriesCtrl,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Calorías',
-                      suffixText: 'kcal',
-                      prefixIcon: Icon(Icons.local_fire_department_rounded),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: TextField(
-                    controller: _proteinCtrl,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Proteína',
-                      suffixText: 'g',
-                      prefixIcon: Icon(Icons.fitness_center_rounded),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _carbsCtrl,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Carbohidratos',
-                      suffixText: 'g',
-                      prefixIcon: Icon(Icons.grain_rounded),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: TextField(
-                    controller: _fatCtrl,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Grasas',
-                      suffixText: 'g',
-                      prefixIcon: Icon(Icons.opacity_rounded),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            GradientButton(
-              label: 'Guardar alimento',
-              icon: Icons.check_rounded,
-              onPressed: _submit,
             ),
           ],
         ),
+        const SizedBox(height: 16),
+
+        // Buscador
+        TextField(
+          controller: _searchCtrl,
+          decoration: InputDecoration(
+            hintText: 'Buscar producto (ej: arroz, pollo…)',
+            prefixIcon: const Icon(Icons.search_rounded),
+            suffixIcon: _searchQuery.isNotEmpty
+                ? IconButton(
+                    icon: const Icon(Icons.clear_rounded),
+                    onPressed: () {
+                      _searchCtrl.clear();
+                      setState(() => _searchQuery = '');
+                    },
+                  )
+                : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            filled: true,
+            fillColor: PaeColors.bgLight,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          ),
+          onChanged: (v) => setState(() => _searchQuery = v),
+        ),
+        const SizedBox(height: 10),
+
+        // Filtro de categorías
+        SizedBox(
+          height: 34,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: kCategories.length,
+            itemBuilder: (_, i) {
+              final cat = kCategories[i];
+              final selected = cat == _selectedCategory;
+              return GestureDetector(
+                onTap: () => setState(() => _selectedCategory = cat),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
+                  margin: const EdgeInsets.only(right: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: selected ? PaeColors.primary : Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    cat,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: selected ? Colors.white : PaeColors.textSecondary,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 10),
+
+        // Lista de productos
+        Flexible(
+          child: filtered.isEmpty
+              ? const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(32),
+                    child: Text(
+                      'No se encontraron productos',
+                      style: TextStyle(color: PaeColors.textSecondary),
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: filtered.length,
+                  itemBuilder: (_, i) {
+                    final p = filtered[i];
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                      leading: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: PaeColors.primary.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(p.icon, color: PaeColors.primary, size: 20),
+                      ),
+                      title: Text(
+                        p.name,
+                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                      ),
+                      subtitle: Text(
+                        p.category,
+                        style: const TextStyle(fontSize: 11, color: PaeColors.textSecondary),
+                      ),
+                      trailing: Text(
+                        '${p.caloriesPer100g.toStringAsFixed(0)} kcal/100${p.unit}',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: PaeColors.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      onTap: () => setState(() => _selected = p),
+                    );
+                  },
+                ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  // ── Paso 2: Cantidad y tipo de comida ─────────────────────────────────────
+
+  Widget _buildStep2() {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Encabezado con botón volver
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () => setState(() => _selected = null),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.arrow_back_rounded, size: 20, color: PaeColors.textSecondary),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _selected!.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 17,
+                        fontFamily: PaeTypography.fontDisplay,
+                      ),
+                    ),
+                    Text(
+                      _selected!.category,
+                      style: const TextStyle(fontSize: 12, color: PaeColors.textSecondary),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+
+          // Cantidad
+          const Text(
+            'Cantidad consumida',
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: PaeColors.textSecondary),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              // Botón −
+              _AmountButton(
+                icon: Icons.remove_rounded,
+                onTap: () {
+                  final v = (double.tryParse(_amountCtrl.text) ?? 100) - 10;
+                  if (v >= 10) {
+                    _amountCtrl.text = v.toStringAsFixed(0);
+                    setState(() {});
+                  }
+                },
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: TextField(
+                  controller: _amountCtrl,
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  onChanged: (_) => setState(() {}),
+                  decoration: InputDecoration(
+                    suffixText: _selected!.unit,
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    filled: true,
+                    fillColor: PaeColors.bgLight,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                ),
+              ),
+              const SizedBox(width: 12),
+              // Botón +
+              _AmountButton(
+                icon: Icons.add_rounded,
+                onTap: () {
+                  final v = (double.tryParse(_amountCtrl.text) ?? 100) + 10;
+                  _amountCtrl.text = v.toStringAsFixed(0);
+                  setState(() {});
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Preview nutricional calculado
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: PaeColors.primary.withOpacity(0.06),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: PaeColors.primary.withOpacity(0.2)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _NutrientPreview(label: 'Calorías', value: _calcCalories, unit: 'kcal', color: PaeColors.primary),
+                _NutrientPreview(label: 'Proteína', value: _calcProtein, unit: 'g', color: const Color(0xFF4FC3F7)),
+                _NutrientPreview(label: 'Carbos', value: _calcCarbs, unit: 'g', color: const Color(0xFFFFB300)),
+                _NutrientPreview(label: 'Grasas', value: _calcFat, unit: 'g', color: const Color(0xFFFF7043)),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Tipo de comida
+          const Text(
+            'Momento del día',
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: PaeColors.textSecondary),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: MealType.values.map((m) {
+              final sel = m == _selectedMeal;
+              return Expanded(
+                child: GestureDetector(
+                  onTap: () => setState(() => _selectedMeal = m),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: const EdgeInsets.only(right: 6),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    decoration: BoxDecoration(
+                      color: sel ? m.color.withOpacity(0.15) : Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: sel ? m.color : Colors.transparent,
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Icon(m.icon, color: m.color, size: 18),
+                        const SizedBox(height: 2),
+                        Text(
+                          m.label,
+                          style: TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w600,
+                            color: sel ? m.color : PaeColors.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 20),
+
+          GradientButton(
+            label: 'Agregar producto',
+            icon: Icons.check_rounded,
+            onPressed: _confirm,
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
+    );
+  }
+}
+
+// ── Widgets auxiliares del sheet ──────────────────────────────────────────────
+
+class _AmountButton extends StatelessWidget {
+  const _AmountButton({required this.icon, required this.onTap});
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: PaeColors.primary.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(icon, color: PaeColors.primary, size: 22),
+      ),
+    );
+  }
+}
+
+class _NutrientPreview extends StatelessWidget {
+  const _NutrientPreview({
+    required this.label,
+    required this.value,
+    required this.unit,
+    required this.color,
+  });
+  final String label;
+  final double value;
+  final String unit;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          '${value.toStringAsFixed(1)}',
+          style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15, color: color),
+        ),
+        Text(unit, style: TextStyle(fontSize: 10, color: color.withOpacity(0.7))),
+        const SizedBox(height: 2),
+        Text(label, style: const TextStyle(fontSize: 10, color: PaeColors.textSecondary)),
+      ],
     );
   }
 }
@@ -970,19 +1329,19 @@ class _QuickSuggestions extends StatelessWidget {
             runSpacing: 8,
             children: [
               _QuickChip(
-                label: 'Recetas saludables PAE',
+                label: 'Productos PAE recomendados',
                 onTap: () => onSuggestionTap(
-                    'Dame 3 recetas saludables típicas del PAE colombiano, fáciles de preparar.'),
+                    'Dame una lista de productos alimenticios saludables recomendados para el PAE colombiano.'),
               ),
               _QuickChip(
-                label: '¿Qué debo comer hoy?',
+                label: '¿Qué debo consumir hoy?',
                 onTap: () => onSuggestionTap(
-                    'No he comido nada aún. ¿Qué menú balanceado me recomiendas para hoy?'),
+                    'No he consumido nada aún. ¿Qué productos alimenticios balanceados me recomiendas para hoy?'),
               ),
               _QuickChip(
                 label: 'Nutrición para niños',
                 onTap: () => onSuggestionTap(
-                    'Dame consejos de nutrición para niños en edad escolar en el contexto del PAE.'),
+                    'Dame consejos sobre qué productos alimenticios son esenciales para niños en edad escolar en el PAE.'),
               ),
             ],
           ),

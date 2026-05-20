@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../app/theme.dart';
 
@@ -87,9 +88,14 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (photoPath != null && photoPath!.isNotEmpty) {
+      // File paths from image_picker (e.g. /data/user/.../image.jpg) need FileImage.
+      // Asset paths (e.g. assets/images/...) need AssetImage.
+      final ImageProvider imageProvider = photoPath!.startsWith('assets/')
+          ? AssetImage(photoPath!) as ImageProvider
+          : FileImage(File(photoPath!));
       return CircleAvatar(
         radius: radius,
-        backgroundImage: AssetImage(photoPath!),
+        backgroundImage: imageProvider,
         backgroundColor: backgroundColor ?? PaeColors.primaryLight,
       );
     }
